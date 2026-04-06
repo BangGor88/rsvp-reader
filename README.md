@@ -1,10 +1,10 @@
-# RSVP Reader
+# RSVP Reader 📖
 ![Platform](https://img.shields.io/badge/platform-Windows-blue?logo=windows)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ![RSVP Reader](rsvp-reader.png)
 
-Read PDFs at high speed, one word at a time. Upload, set your pace, and focus. ⚡📖🔥
+Help your kiddos with reading a book in an ease way? Look no further 🔥 Here I made an exectuable file that can help reading a book 📖. Read PDFs at high speed, one word at a time. Upload, set your pace, and focus.⚡
 
 ## Get the Executable! 🧰⬇️
 
