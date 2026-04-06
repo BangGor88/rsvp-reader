@@ -1,0 +1,6 @@
+RSVP Reader Windows Release
+Version: RSVPReader-20260406-184446
+Date: 2026-04-06 18:44:46
+
+Run:
+  .\\RSVPReader-20260406-184446.exe
