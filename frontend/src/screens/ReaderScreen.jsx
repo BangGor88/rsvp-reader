@@ -3,8 +3,10 @@ import { api } from '../api/client';
 import ControlBar from '../components/ControlBar';
 import ProgressBar from '../components/ProgressBar';
 import RSVPDisplay from '../components/RSVPDisplay';
+import ReadingStats from '../components/ReadingStats';
 import SettingsPanel from '../components/SettingsPanel';
 import { useRSVP } from '../hooks/useRSVP';
+import { useReadingTimer } from '../hooks/useReadingTimer';
 import { WPM_MAX, WPM_MIN, WPM_STEP } from '../constants/reader';
 
 const CONTROL_TRANSLATE_LANGUAGES = ['English', 'Swedish', 'Indonesian', 'German', 'Japanese', 'Spanish'];
@@ -80,6 +82,9 @@ export default function ReaderScreen({ docId, startPage, startWord, resumeIndex,
 
   const rsvp = useRSVP(words, settings.wpm, initialIndex);
   const currentWord = rsvp.currentWord || '';
+
+  const { todaySeconds, goalSeconds, goalMet, history: readingHistory } =
+    useReadingTimer(rsvp.isPlaying, settings.dailyGoalMinutes ?? 10);
 
   useEffect(() => {
     try {
@@ -178,6 +183,14 @@ export default function ReaderScreen({ docId, startPage, startWord, resumeIndex,
   return (
     <div className="reader-screen">
       <ProgressBar currentIndex={rsvp.currentIndex} totalWords={rsvp.totalWords} />
+
+      <ReadingStats
+        todaySeconds={todaySeconds}
+        goalSeconds={goalSeconds}
+        goalMet={goalMet}
+        history={readingHistory}
+        t={t}
+      />
 
       {translatingWord && (
         <div className="notice" style={{ textAlign: 'center', padding: '4px 0' }}>

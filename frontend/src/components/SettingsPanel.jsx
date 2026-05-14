@@ -103,6 +103,16 @@ export default function SettingsPanel({ open, settings, onUpdate, onReset, onClo
         {t('settings.applyLanguage')}
       </button>
 
+      <label>{t('settings.dailyGoal')}: {settings.dailyGoalMinutes} {t('settings.minutes')}</label>
+      <div className="row">
+        <button
+          onClick={() => onUpdate({ dailyGoalMinutes: Math.max(1, settings.dailyGoalMinutes - 5) })}
+          disabled={settings.dailyGoalMinutes <= 1}
+        >-5</button>
+        <div className="control-meta">{settings.dailyGoalMinutes} {t('settings.minutes')}</div>
+        <button onClick={() => onUpdate({ dailyGoalMinutes: Math.min(180, settings.dailyGoalMinutes + 5) })}>+5</button>
+      </div>
+
       <button onClick={onReset}>{t('settings.reset')}</button>
     </aside>
   );

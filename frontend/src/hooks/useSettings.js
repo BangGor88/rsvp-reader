@@ -23,6 +23,14 @@ function normalizeTranslateTarget(value) {
   return 'English';
 }
 
+const DEFAULT_DAILY_GOAL = 10;
+
+function normalizeGoal(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n < 1) return DEFAULT_DAILY_GOAL;
+  return Math.min(Math.round(n), 180); // cap at 3 hours
+}
+
 export const DEFAULT_SETTINGS = {
   wpm: DEFAULT_WPM,
   fontSize: 48,
@@ -30,7 +38,8 @@ export const DEFAULT_SETTINGS = {
   orpColor: '#f25f4c',
   theme: 'dark',
   language: DEFAULT_LANGUAGE,
-  translateTarget: 'English'
+  translateTarget: 'English',
+  dailyGoalMinutes: DEFAULT_DAILY_GOAL
 };
 
 export function useSettings() {
@@ -43,7 +52,8 @@ export function useSettings() {
         ...parsed,
         wpm: normalizeWpm(parsed.wpm),
         language: normalizeLanguage(parsed.language),
-        translateTarget: normalizeTranslateTarget(parsed.translateTarget)
+        translateTarget: normalizeTranslateTarget(parsed.translateTarget),
+        dailyGoalMinutes: normalizeGoal(parsed.dailyGoalMinutes)
       };
     } catch {
       return DEFAULT_SETTINGS;
@@ -56,6 +66,7 @@ export function useSettings() {
       next.wpm = normalizeWpm(next.wpm);
       next.language = normalizeLanguage(next.language);
       next.translateTarget = normalizeTranslateTarget(next.translateTarget);
+      next.dailyGoalMinutes = normalizeGoal(next.dailyGoalMinutes);
       localStorage.setItem(KEY, JSON.stringify(next));
       return next;
     });

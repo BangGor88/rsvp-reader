@@ -82,7 +82,19 @@ const TRANSLATIONS = {
     'settings.translateTarget': 'Translate to',
     'translate.loading': 'Translating...',
     'translate.error': 'Translation failed',
-    'translate.alternatives': 'Top word translations'
+    'translate.alternatives': 'Top word translations',
+
+    'settings.dailyGoal': 'Daily Reading Goal',
+    'settings.minutes': 'min',
+
+    'stats.stripTitle': 'Today\'s reading time / daily goal',
+    'stats.viewHistory': 'View 10-day history',
+    'stats.history': 'History',
+    'stats.historyTitle': '10-Day Reading History',
+    'stats.dailyGoal': 'Daily goal',
+    'stats.today': 'Today',
+    'stats.total10days': '10-day total',
+    'stats.daysGoalMet': 'Days goal met'
   },
   German: {
     'health.backend': 'Backend',
@@ -148,7 +160,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Deaktivieren',
     'settings.translateTarget': 'Uebersetzen nach',
     'translate.loading': 'Uebersetze...',
-    'translate.error': 'Uebersetzung fehlgeschlagen'
+    'translate.error': 'Uebersetzung fehlgeschlagen',
+
+    'settings.dailyGoal': 'Tagesziel',
+    'settings.minutes': 'Min',
+
+    'stats.stripTitle': 'Heutige Lesezeit / Tagesziel',
+    'stats.viewHistory': '10-Tage-Verlauf anzeigen',
+    'stats.history': 'Verlauf',
+    'stats.historyTitle': '10-Tage-Leseverlauf',
+    'stats.dailyGoal': 'Tagesziel',
+    'stats.today': 'Heute',
+    'stats.total10days': '10-Tage-Gesamt',
+    'stats.daysGoalMet': 'Tage Ziel erreicht'
   },
   French: {
     'health.backend': 'Backend',
@@ -214,7 +238,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Desactiver',
     'settings.translateTarget': 'Traduire vers',
     'translate.loading': 'Traduction en cours...',
-    'translate.error': 'Traduction echouee'
+    'translate.error': 'Traduction echouee',
+
+    'settings.dailyGoal': 'Objectif quotidien',
+    'settings.minutes': 'min',
+
+    'stats.stripTitle': 'Temps de lecture aujourd\'hui / objectif',
+    'stats.viewHistory': 'Voir l\'historique 10 jours',
+    'stats.history': 'Historique',
+    'stats.historyTitle': 'Historique de lecture 10 jours',
+    'stats.dailyGoal': 'Objectif quotidien',
+    'stats.today': 'Auj.',
+    'stats.total10days': 'Total 10 jours',
+    'stats.daysGoalMet': 'Jours objectif atteint'
   },
   Spanish: {
     'health.backend': 'Backend',
@@ -280,7 +316,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Desactivar',
     'settings.translateTarget': 'Traducir a',
     'translate.loading': 'Traduciendo...',
-    'translate.error': 'Traduccion fallida'
+    'translate.error': 'Traduccion fallida',
+
+    'settings.dailyGoal': 'Meta diaria',
+    'settings.minutes': 'min',
+
+    'stats.stripTitle': 'Tiempo de lectura hoy / meta',
+    'stats.viewHistory': 'Ver historial 10 dias',
+    'stats.history': 'Historial',
+    'stats.historyTitle': 'Historial de lectura 10 dias',
+    'stats.dailyGoal': 'Meta diaria',
+    'stats.today': 'Hoy',
+    'stats.total10days': 'Total 10 dias',
+    'stats.daysGoalMet': 'Dias meta cumplida'
   },
   Chinese: {
     'health.backend': 'Backend',
@@ -346,7 +394,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Guan bi',
     'settings.translateTarget': 'Fan yi cheng',
     'translate.loading': 'Fan yi zhong...',
-    'translate.error': 'Fan yi shi bai'
+    'translate.error': 'Fan yi shi bai',
+
+    'settings.dailyGoal': 'Mei ri mu biao',
+    'settings.minutes': 'fen',
+
+    'stats.stripTitle': 'Jin ri yue du shi jian / mu biao',
+    'stats.viewHistory': 'Cha kan 10 tian li shi',
+    'stats.history': 'Li shi',
+    'stats.historyTitle': '10 tian yue du ji lu',
+    'stats.dailyGoal': 'Mei ri mu biao',
+    'stats.today': 'Jin tian',
+    'stats.total10days': '10 tian he ji',
+    'stats.daysGoalMet': 'Da biao tian shu'
   },
   Japanese: {
     'health.backend': 'Backend',
@@ -412,7 +472,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Mukko ni suru',
     'settings.translateTarget': 'Honyaku saki',
     'translate.loading': 'Honyaku chuu...',
-    'translate.error': 'Honyaku shippai'
+    'translate.error': 'Honyaku shippai',
+
+    'settings.dailyGoal': 'Mainichi no mokuhyo',
+    'settings.minutes': 'fun',
+
+    'stats.stripTitle': 'Kyo no dokusho jikan / mokuhyo',
+    'stats.viewHistory': '10-nichi no rekishi wo miru',
+    'stats.history': 'Rekishi',
+    'stats.historyTitle': '10-nichi dokusho kiroku',
+    'stats.dailyGoal': 'Mainichi no mokuhyo',
+    'stats.today': 'Kyo',
+    'stats.total10days': '10-nichi gokei',
+    'stats.daysGoalMet': 'Mokuhyo tassei nissu'
   },
   Swedish: {
     'health.backend': 'Backend',
@@ -475,7 +547,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Inaktivera',
     'settings.translateTarget': 'Oeversoett till',
     'translate.loading': 'Oeversoetter...',
-    'translate.error': 'Oeversoettning misslyckades'
+    'translate.error': 'Oeversoettning misslyckades',
+
+    'settings.dailyGoal': 'Dagligt mal',
+    'settings.minutes': 'min',
+
+    'stats.stripTitle': 'Dagens lasttid / mal',
+    'stats.viewHistory': 'Visa 10-dagars historik',
+    'stats.history': 'Historik',
+    'stats.historyTitle': '10 dagars lashistorik',
+    'stats.dailyGoal': 'Dagligt mal',
+    'stats.today': 'Idag',
+    'stats.total10days': 'Totalt 10 dagar',
+    'stats.daysGoalMet': 'Dagar mal uppnatt'
   },
   Indonesian: {
     'health.backend': 'Backend',
@@ -541,7 +625,19 @@ const TRANSLATIONS = {
     'settings.translateOff': 'Nonaktifkan',
     'settings.translateTarget': 'Terjemahkan ke',
     'translate.loading': 'Menerjemahkan...',
-    'translate.error': 'Terjemahan gagal'
+    'translate.error': 'Terjemahan gagal',
+
+    'settings.dailyGoal': 'Target harian',
+    'settings.minutes': 'mnt',
+
+    'stats.stripTitle': 'Waktu baca hari ini / target',
+    'stats.viewHistory': 'Lihat riwayat 10 hari',
+    'stats.history': 'Riwayat',
+    'stats.historyTitle': 'Riwayat baca 10 hari',
+    'stats.dailyGoal': 'Target harian',
+    'stats.today': 'Hari ini',
+    'stats.total10days': 'Total 10 hari',
+    'stats.daysGoalMet': 'Hari target tercapai'
   }
 };
 
