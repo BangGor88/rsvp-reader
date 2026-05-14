@@ -8,6 +8,31 @@ Rapid Serial Visual Presentation Reader
 
 Help your kiddos with reading a book in an ease way? Look no further 🔥 Here I made an exectuable file that can help reading a book 📖. Read PDFs at high speed, one word at a time. Upload, set your pace, and focus.⚡
 
+## Reading Timer & 10-Day History 📊
+
+Track your daily reading progress and build a habit. The app records how many seconds you spend actively reading each day and shows a 10-day history chart on both the home page and inside the reader.
+
+![Reading History](<read-history.png>)
+
+### How it works
+
+- A timer runs automatically while the RSVP playback is active and pauses the moment you stop.
+- Progress is persisted to `localStorage` so it survives page reloads.
+- The **10-Day Reading History** card is visible on the home (upload) screen — no need to open a book to check your streak.
+- Inside the reader a compact strip in the top-right corner shows **today / goal** with a live progress bar. Click **History** to open the full chart.
+
+### Daily goal
+
+The default goal is **10 minutes per day**. Adjust it in ⚙ Settings → *Daily Goal*. Days where you hit the goal are highlighted in teal (★); today's bar is shown in red until the goal is met.
+
+| Location | What you see |
+|---|---|
+| Home page | Full 10-day bar chart + today's progress bar |
+| Reader (strip) | Compact `today / goal` bar with a **History** button |
+| Reader (History modal) | Same full chart, opened inline |
+
+---
+
 ## Current Build
 
 - Current packaged build in this repository: `RSVPReader-20260406-184446`
