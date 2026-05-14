@@ -105,6 +105,39 @@ button:hover {
   text-align: left;
 }
 
+.card h3 {
+  margin: 0 0 0.75rem;
+}
+
+.recent-doc-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.recent-doc-item {
+  display: grid;
+  gap: 0.25rem;
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.recent-doc-item strong {
+  font-size: 1rem;
+}
+
+.recent-doc-item span {
+  font-size: 0.88rem;
+  opacity: 0.88;
+}
+
+.recent-doc-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
 .notice {
   padding: 0.65rem;
   border-radius: 10px;
@@ -140,14 +173,26 @@ button:hover {
   transform: translateY(-50%);
 }
 
-.rsvp-shell {
+.rsvp-stack {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.rsvp-shell {
+  display: inline-flex;
   align-items: center;
   position: relative;
   min-width: 0;
   justify-content: flex-start;
   font-weight: 700;
   letter-spacing: 0.015em;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
 }
 
 .rsvp-before, .rsvp-after, .rsvp-orp {
@@ -159,6 +204,59 @@ button:hover {
   display: inline-block;
 }
 
+.rsvp-translation {
+  max-width: min(80vw, 52rem);
+  text-align: center;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  line-height: 1.2;
+  color: var(--text-muted);
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+}
+
+.rsvp-context {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.rsvp-translation-result {
+  color: var(--text);
+  background: rgba(46, 196, 182, 0.18);
+}
+
+.rsvp-translation-result .rsvp-highlight {
+  background: rgba(255, 255, 255, 0.92);
+  color: #102a43;
+  font-weight: 700;
+}
+
+.rsvp-translation-options {
+  max-width: min(80vw, 52rem);
+  text-align: center;
+  font-size: clamp(0.78rem, 1.7vw, 0.96rem);
+  line-height: 1.25;
+  color: var(--muted-light);
+  padding: 0.15rem 0.4rem;
+}
+
+body[data-theme='dark'] .rsvp-translation-options {
+  color: var(--muted-dark);
+}
+
+.rsvp-translation-options-label {
+  font-weight: 700;
+}
+
+.rsvp-highlight {
+  background: rgba(255, 209, 102, 0.35);
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
 .control-bar {
   position: fixed;
   bottom: 1rem;
@@ -166,18 +264,13 @@ button:hover {
   transform: translateX(-50%);
   width: min(900px, 96vw);
   display: grid;
-  grid-template-columns: auto auto auto 1fr 2fr auto;
+  grid-template-columns: auto auto auto auto auto 1fr 2fr auto;
   gap: 0.55rem;
   padding: 0.7rem;
   border-radius: 14px;
   background: var(--panel-dark);
   backdrop-filter: blur(10px);
   z-index: 30;
-}
-
-.control-meta {
-  align-self: center;
-  font-size: 0.85rem;
 }
 
 .drawer {

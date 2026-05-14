@@ -1,12 +1,18 @@
 $ErrorActionPreference = 'Stop'
 
-Write-Host '[1/5] Building frontend assets...'
+$buildVersion = if ($env:RSVP_BUILD_VERSION) { $env:RSVP_BUILD_VERSION } else { "RSVPReader-dev-$(Get-Date -Format 'yyyyMMdd-HHmmss')" }
+$buildVersionFile = Join-Path $PWD 'backend\build_version.txt'
+
+Write-Host "[0/6] Writing build version: $buildVersion"
+$buildVersion | Out-File -FilePath $buildVersionFile -Encoding ascii -NoNewline
+
+Write-Host '[1/6] Building frontend assets...'
 Push-Location frontend
 npm install
 npm run build
 Pop-Location
 
-Write-Host '[2/5] Copying frontend assets into backend/static...'
+Write-Host '[2/6] Copying frontend assets into backend/static...'
 $staticDir = Join-Path $PWD 'backend\static'
 if (Test-Path $staticDir) {
   Remove-Item $staticDir -Recurse -Force
@@ -14,7 +20,7 @@ if (Test-Path $staticDir) {
 New-Item -ItemType Directory -Path $staticDir | Out-Null
 Copy-Item -Path 'frontend\dist\*' -Destination $staticDir -Recurse -Force
 
-Write-Host '[3/5] Installing PyInstaller...'
+Write-Host '[3/6] Installing PyInstaller...'
 if (-not (Test-Path '.venv-build\Scripts\python.exe')) {
   & '.venv/Scripts/python.exe' -m venv .venv-build
 }
@@ -23,15 +29,11 @@ if (-not (Test-Path '.venv-build\Scripts\python.exe')) {
 & '.venv-build\Scripts\python.exe' -m pip install -r backend/requirements.txt
 & '.venv-build\Scripts\python.exe' -m pip install pyinstaller
 
-Write-Host '[4/5] Building one-file executable...'
-& '.venv-build\Scripts\python.exe' -m PyInstaller `
-  --noconfirm `
-  --clean `
-  --onefile `
-  --name RSVPReader `
-  --add-data "backend/static;static" `
-  --paths backend `
-  backend/desktop_main.py
+Write-Host '[4/6] Building one-file executable...'
+& '.venv-build\Scripts\python.exe' -m PyInstaller RSVPReader.spec --noconfirm --clean
 
-Write-Host '[5/5] Build complete.'
+Write-Host '[5/6] Standalone runtime prepared.'
+Write-Host 'Runtime data will be stored under %LOCALAPPDATA%\RSVPReader when the EXE runs.'
+
+Write-Host '[6/6] Build complete.'
 Write-Host 'Output: dist\RSVPReader.exe'

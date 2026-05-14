@@ -3,12 +3,14 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from build_info import get_build_version
 from routers.pdf import router as pdf_router
+from routers.translate import router as translate_router
 
 load_dotenv()
 
@@ -41,20 +43,14 @@ def _mount_frontend(app: FastAPI, frontend_dist: Path) -> None:
     if assets_dir.exists():
         app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
-    @app.get("/", include_in_schema=False)
-    def serve_frontend_root() -> FileResponse:
-        return FileResponse(frontend_dist / "index.html")
-
-    @app.get("/{full_path:path}", include_in_schema=False)
-    def serve_frontend_spa(full_path: str) -> FileResponse:
-        if full_path.startswith("api"):
-            raise HTTPException(status_code=404, detail="Not found")
-
-        requested = frontend_dist / full_path
-        if requested.is_file():
-            return FileResponse(requested)
-
-        return FileResponse(frontend_dist / "index.html")
+    @app.middleware("http")
+    async def spa_fallback(request: Request, call_next: Any) -> Any:
+        response = await call_next(request)
+        if response.status_code == 404 and not request.url.path.startswith("/api"):
+            index = frontend_dist / "index.html"
+            if index.exists():
+                return FileResponse(index)
+        return response
 
 
 def create_app() -> FastAPI:
@@ -68,15 +64,14 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(pdf_router, prefix="/api")
+    app.include_router(translate_router, prefix="/api")
+
+    @app.get("/api/health")
+    def health() -> dict[str, Any]:
+        return {"backend": "ok", "build": get_build_version()}
+
     _mount_frontend(app, _resolve_frontend_dist())
     return app
 
 
 app = create_app()
-
-
-@app.get("/api/health")
-def health() -> dict[str, Any]:
-    return {
-        "backend": "ok",
-    }

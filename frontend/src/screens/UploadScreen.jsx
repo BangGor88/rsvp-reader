@@ -1,5 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../api/client';
+
+const PROGRESS_KEY_PREFIX = 'rsvp_progress_';
+
+function getResumeIndex(docId) {
+  try {
+    const raw = localStorage.getItem(`${PROGRESS_KEY_PREFIX}${docId}`);
+    if (!raw) return 0;
+    const value = Number(raw);
+    return Number.isFinite(value) && value >= 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
 
 export default function UploadScreen({ onUploaded, t }) {
   const [dragging, setDragging] = useState(false);
@@ -7,6 +20,20 @@ export default function UploadScreen({ onUploaded, t }) {
   const [meta, setMeta] = useState(null);
   const [startPage, setStartPage] = useState(1);
   const [startWord, setStartWord] = useState(0);
+  const [recentDocs, setRecentDocs] = useState([]);
+
+  const loadRecentDocs = async () => {
+    try {
+      const res = await api.get('/pdf/recent');
+      setRecentDocs(res.data.documents || []);
+    } catch {
+      setRecentDocs([]);
+    }
+  };
+
+  useEffect(() => {
+    loadRecentDocs();
+  }, []);
 
   const uploadFile = async (file) => {
     setError('');
@@ -20,6 +47,7 @@ export default function UploadScreen({ onUploaded, t }) {
       setMeta(res.data);
       setStartPage(1);
       setStartWord(0);
+      await loadRecentDocs();
     } catch (err) {
       const msg = err?.response?.data?.detail || t('upload.failed');
       setError(String(msg));
@@ -33,10 +61,25 @@ export default function UploadScreen({ onUploaded, t }) {
     if (file) await uploadFile(file);
   };
 
+  const openModelsFolder = async () => {
+    setError('');
+    try {
+      await api.post('/pdf/models/open-folder');
+    } catch (err) {
+      const msg = err?.response?.data?.detail || t('upload.openModelsFailed');
+      setError(String(msg));
+    }
+  };
+
   return (
     <div className="upload-screen">
       <h1>{t('upload.title')}</h1>
+      <p>Rapid Serial Visual Presentation (RSVP)</p>
       <p>{t('upload.subtitle')}</p>
+
+      <button type="button" onClick={openModelsFolder}>
+        {t('upload.openModelsFolder')}
+      </button>
 
       <label
         className={`drop-zone ${dragging ? 'dragging' : ''}`}
@@ -104,6 +147,42 @@ export default function UploadScreen({ onUploaded, t }) {
           </button>
         </div>
       )}
+
+      <div className="card">
+        <h3>{t('upload.recentTitle')}</h3>
+        {recentDocs.length === 0 ? (
+          <p>{t('upload.recentEmpty')}</p>
+        ) : (
+          <div className="recent-doc-list">
+            {recentDocs.map((doc) => {
+              const resumeIndex = getResumeIndex(doc.doc_id);
+              return (
+                <button
+                  key={doc.doc_id}
+                  className="recent-doc-item"
+                  onClick={() =>
+                    onUploaded({
+                      docId: doc.doc_id,
+                      pages: doc.pages || [],
+                      startPage: 1,
+                      startWord: 0,
+                      resumeIndex,
+                    })
+                  }
+                >
+                  <strong>{doc.filename || doc.doc_id}</strong>
+                  <span>
+                    {doc.page_count} {t('upload.pages')} · {doc.word_count} {t('upload.words')}
+                  </span>
+                  {resumeIndex > 0 && (
+                    <span>{t('upload.resumeFrom')} {resumeIndex + 1}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

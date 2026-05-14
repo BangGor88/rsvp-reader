@@ -1,6 +1,10 @@
 $ErrorActionPreference = 'Stop'
 
+$timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+$version = "RSVPReader-$timestamp"
+
 Write-Host '[1/4] Building executable...'
+$env:RSVP_BUILD_VERSION = $version
 powershell -ExecutionPolicy Bypass -File scripts/build_exe.ps1
 
 $exePath = Join-Path $PWD 'dist\RSVPReader.exe'
@@ -8,8 +12,6 @@ if (-not (Test-Path $exePath)) {
   throw 'Build output missing: dist\\RSVPReader.exe'
 }
 
-$timestamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$version = "RSVPReader-$timestamp"
 $releaseDir = Join-Path $PWD ("release\\" + $version)
 
 Write-Host '[2/4] Preparing release folder...'

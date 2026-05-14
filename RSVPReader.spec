@@ -1,11 +1,26 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import site
 
+# Locate llama_cpp native DLLs regardless of venv name.
+_llama_lib = None
+for _sp in site.getsitepackages():
+    _candidate = os.path.join(_sp, 'llama_cpp', 'lib')
+    if os.path.isdir(_candidate):
+        _llama_lib = _candidate
+        break
+
+_llama_binaries = []
+if _llama_lib:
+    for _dll in os.listdir(_llama_lib):
+        if _dll.endswith('.dll'):
+            _llama_binaries.append((os.path.join(_llama_lib, _dll), 'llama_cpp/lib'))
 
 a = Analysis(
     ['backend\\desktop_main.py'],
     pathex=['backend'],
-    binaries=[],
-    datas=[('backend/static', 'static')],
+    binaries=_llama_binaries,
+    datas=[('backend/static', 'static'), ('backend/build_version.txt', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -29,7 +44,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,

@@ -7,7 +7,7 @@ import { createTranslator } from './i18n';
 
 export default function App() {
   const [docState, setDocState] = useState(null);
-  const [health, setHealth] = useState({ backend: 'unknown' });
+  const [health, setHealth] = useState({ backend: 'unknown', build: 'unknown' });
   const { settings, updateSettings, resetSettings, isRTL } = useSettings();
   const t = createTranslator(settings.language);
 
@@ -18,7 +18,7 @@ export default function App() {
   useEffect(() => {
     const id = setInterval(() => {
       api.get('/health').then((res) => setHealth(res.data)).catch(() => {
-        setHealth({ backend: 'unavailable' });
+        setHealth({ backend: 'unavailable', build: 'unavailable' });
       });
     }, 3000);
 
@@ -35,6 +35,7 @@ export default function App() {
     <div className="app-shell">
       <div className="health-bar">
         <button className={pillClass(health.backend)} title={t('health.fixBackend')}>{t('health.backend')}: {t(`status.${health.backend}`)}</button>
+        <button className="pill" title={t('health.buildTitle')}>{t('health.build')}: {health.build || t('status.unknown')}</button>
       </div>
 
       {docState ? (
@@ -42,16 +43,13 @@ export default function App() {
           docId={docState.docId}
           startPage={docState.startPage}
           startWord={docState.startWord}
+          resumeIndex={docState.resumeIndex}
           settings={settings}
           onSettings={updateSettings}
           onResetSettings={resetSettings}
           isRTL={isRTL}
           t={t}
           onUploadNew={async () => {
-            try {
-              await api.delete(`/pdf/${docState.docId}`);
-            } catch {
-            }
             setDocState(null);
           }}
         />

@@ -18,14 +18,19 @@ function normalizeLanguage(value) {
   return DEFAULT_LANGUAGE;
 }
 
+function normalizeTranslateTarget(value) {
+  if (SUPPORTED_LANGUAGES.includes(value)) return value;
+  return 'English';
+}
+
 export const DEFAULT_SETTINGS = {
   wpm: DEFAULT_WPM,
   fontSize: 48,
   focusLetter: 2,
-  position: { x: 50, y: 50 },
   orpColor: '#f25f4c',
   theme: 'dark',
-  language: DEFAULT_LANGUAGE
+  language: DEFAULT_LANGUAGE,
+  translateTarget: 'English'
 };
 
 export function useSettings() {
@@ -37,7 +42,8 @@ export function useSettings() {
       return {
         ...parsed,
         wpm: normalizeWpm(parsed.wpm),
-        language: normalizeLanguage(parsed.language)
+        language: normalizeLanguage(parsed.language),
+        translateTarget: normalizeTranslateTarget(parsed.translateTarget)
       };
     } catch {
       return DEFAULT_SETTINGS;
@@ -49,6 +55,7 @@ export function useSettings() {
       const next = { ...prev, ...patch };
       next.wpm = normalizeWpm(next.wpm);
       next.language = normalizeLanguage(next.language);
+      next.translateTarget = normalizeTranslateTarget(next.translateTarget);
       localStorage.setItem(KEY, JSON.stringify(next));
       return next;
     });

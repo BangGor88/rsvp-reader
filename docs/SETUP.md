@@ -7,6 +7,7 @@
 - npm
 - Docker + Docker Compose (optional)
 - Windows PowerShell (for .ps1 scripts)
+- Microsoft Visual C++ Build Tools with CMake (required to compile `llama-cpp-python` for the desktop EXE)
 
 ## Local Development (Without Docker)
 
@@ -23,6 +24,13 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Backend API: `http://localhost:8000`
+
+To enable translation and chat in dev mode, set `LLAMA_MODEL_PATH` before starting:
+
+```powershell
+$env:LLAMA_MODEL_PATH = "C:\path\to\your-model.gguf"
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
 ### Frontend setup
 

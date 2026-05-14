@@ -6,6 +6,7 @@
 - React + Vite frontend for upload flow and RSVP reading experience.
 - Docker setup for development and production-style local deployment.
 - Windows executable packaging via PyInstaller.
+- Current build surfaced in the app health bar and backend health endpoint.
 
 ## Features
 
@@ -27,10 +28,12 @@
   - ORP color
   - Theme (light/dark)
   - Language selection
+- **LLM-powered translation**: translate the current sentence to any supported language while reading; highlights the translated focus word inline. Requires a GGUF model.
+- **Open Models Folder**: one-click button on the upload page opens `%LOCALAPPDATA%\RSVPReader\models` in Explorer.
 
 ## Tech Stack
 
-- Backend: FastAPI, Uvicorn, PyMuPDF, python-dotenv
+- Backend: FastAPI, Uvicorn, PyMuPDF, python-dotenv, llama-cpp-python
 - Frontend: React 18, Vite, Axios
 - Containers: Docker, Docker Compose, Nginx
 - Packaging: PyInstaller (Windows)
@@ -41,9 +44,11 @@
 rsvp-reader/
   backend/
     main.py                # API app + static SPA serving
-    desktop_main.py        # Desktop launcher entrypoint
-    routers/pdf.py         # PDF endpoints
+    desktop_main.py        # Desktop launcher entrypoint (redirects stdio before imports)
+    routers/pdf.py         # PDF endpoints + models folder endpoint
+    routers/translate.py   # LLM translation endpoint
     services/pdf_service.py# PDF parsing logic
+    services/llm_service.py# llama.cpp model loader (singleton)
     static/                # Built frontend assets copied for backend/desktop
   frontend/
     src/
@@ -55,5 +60,5 @@ rsvp-reader/
     release_exe.ps1        # Create release folder + checksum + notes
   docker-compose.yml       # Production-style local stack (frontend via Nginx)
   docker-compose.dev.yml   # Live-reload development stack
-  RSVPReader.spec          # PyInstaller spec
+  RSVPReader.spec          # PyInstaller spec (bundles llama_cpp DLLs)
 ```

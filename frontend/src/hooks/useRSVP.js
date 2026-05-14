@@ -5,10 +5,14 @@ export function useRSVP(words, initialWpm = 300, initialIndex = 0) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [wpm, setWpm] = useState(initialWpm);
   const [isPlaying, setIsPlaying] = useState(false);
+  const clampedInitialIndex = useMemo(() => {
+    if (!words.length) return 0;
+    return Math.max(0, Math.min(words.length - 1, initialIndex || 0));
+  }, [initialIndex, words.length]);
 
   useEffect(() => {
-    setCurrentIndex(initialIndex || 0);
-  }, [initialIndex, words]);
+    setCurrentIndex(clampedInitialIndex);
+  }, [clampedInitialIndex]);
 
   useEffect(() => {
     if (!isPlaying || words.length === 0) return;

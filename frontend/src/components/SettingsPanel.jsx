@@ -8,18 +8,6 @@ import {
   WPM_STEP
 } from '../constants/reader';
 
-const positions = [
-  { label: 'Top Left', x: 20, y: 20 },
-  { label: 'Top Center', x: 50, y: 20 },
-  { label: 'Top Right', x: 80, y: 20 },
-  { label: 'Center Left', x: 20, y: 50 },
-  { label: 'Center', x: 50, y: 50 },
-  { label: 'Center Right', x: 80, y: 50 },
-  { label: 'Bottom Left', x: 20, y: 80 },
-  { label: 'Bottom Center', x: 50, y: 80 },
-  { label: 'Bottom Right', x: 80, y: 80 }
-];
-
 const colors = ['#f25f4c', '#ffd166', '#2ec4b6', '#e76f51', '#3a86ff'];
 const fontSizeOptions = [16, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96];
 
@@ -73,15 +61,6 @@ export default function SettingsPanel({ open, settings, onUpdate, onReset, onClo
             }}
           >
             {num}
-          </button>
-        ))}
-      </div>
-
-      <label>{t('settings.position')}</label>
-      <div className="grid-3">
-        {positions.map((pos) => (
-          <button key={pos.label} onClick={() => onUpdate({ position: { x: pos.x, y: pos.y } })}>
-            {pos.label}
           </button>
         ))}
       </div>

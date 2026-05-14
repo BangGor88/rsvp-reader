@@ -12,6 +12,8 @@ export const SUPPORTED_LANGUAGES = [
 const TRANSLATIONS = {
   English: {
     'health.backend': 'Backend',
+    'health.build': 'Build',
+    'health.buildTitle': 'Current app build',
     'health.chroma': 'Chroma',
     'health.fixBackend': 'Fix: docker compose up backend',
     'health.fixChroma': 'Fix: docker compose up chromadb',
@@ -20,8 +22,10 @@ const TRANSLATIONS = {
     'status.unavailable': 'unavailable',
 
     'upload.title': 'RSVP Reader',
-    'upload.subtitle': 'Upload a PDF to start reading and chatting.',
+    'upload.subtitle': 'Upload a PDF to start reading.',
     'upload.dropzone': 'Drag and drop a PDF or click to browse',
+    'upload.openModelsFolder': 'Open Models Folder',
+    'upload.openModelsFailed': 'Could not open models folder.',
     'upload.failed': 'Upload failed.',
     'upload.words': 'Words',
     'upload.pages': 'Pages',
@@ -29,6 +33,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Start from page',
     'upload.startWord': 'Start from word',
     'upload.startReading': 'Start Reading',
+    'upload.recentTitle': 'Previous uploads',
+    'upload.recentEmpty': 'No previous documents yet.',
+    'upload.resumeFrom': 'Resume from word',
 
     'reader.uploadNew': 'Upload New',
     'reader.settings': 'Settings',
@@ -68,7 +75,14 @@ const TRANSLATIONS = {
     'chat.thinking': 'Thinking...',
     'chat.placeholder': 'Ask about this document',
     'chat.send': 'Send',
-    'chat.error': 'Chat error. Please retry.'
+    'chat.error': 'Chat error. Please retry.',
+    'settings.translate': 'Translate Content',
+    'settings.translateOn': 'Enable',
+    'settings.translateOff': 'Disable',
+    'settings.translateTarget': 'Translate to',
+    'translate.loading': 'Translating...',
+    'translate.error': 'Translation failed',
+    'translate.alternatives': 'Top word translations'
   },
   German: {
     'health.backend': 'Backend',
@@ -77,7 +91,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'RSVP Leser',
-    'upload.subtitle': 'Lade ein PDF hoch, um Lesen und Chat zu starten.',
+    'upload.subtitle': 'Lade ein PDF hoch, um mit dem Lesen zu starten.',
     'upload.dropzone': 'PDF hierher ziehen oder klicken zum Auswaehlen',
     'upload.failed': 'Upload fehlgeschlagen.',
     'upload.words': 'Woerter',
@@ -86,6 +100,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Start bei Seite',
     'upload.startWord': 'Start bei Wort',
     'upload.startReading': 'Lesen starten',
+    'upload.recentTitle': 'Fruehere Uploads',
+    'upload.recentEmpty': 'Noch keine frueheren Dokumente.',
+    'upload.resumeFrom': 'Fortsetzen ab Wort',
 
     'reader.uploadNew': 'Neu hochladen',
     'reader.settings': 'Einstellungen',
@@ -125,7 +142,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Denke nach...',
     'chat.placeholder': 'Frage zu diesem Dokument',
     'chat.send': 'Senden',
-    'chat.error': 'Chat-Fehler. Bitte erneut versuchen.'
+    'chat.error': 'Chat-Fehler. Bitte erneut versuchen.',
+    'settings.translate': 'Inhalt uebersetzen',
+    'settings.translateOn': 'Aktivieren',
+    'settings.translateOff': 'Deaktivieren',
+    'settings.translateTarget': 'Uebersetzen nach',
+    'translate.loading': 'Uebersetze...',
+    'translate.error': 'Uebersetzung fehlgeschlagen'
   },
   French: {
     'health.backend': 'Backend',
@@ -134,7 +157,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'Lecteur RSVP',
-    'upload.subtitle': 'Importez un PDF pour commencer la lecture et le chat.',
+    'upload.subtitle': 'Importez un PDF pour commencer la lecture.',
     'upload.dropzone': 'Glissez-deposez un PDF ou cliquez pour parcourir',
     'upload.failed': 'Echec du televersement.',
     'upload.words': 'Mots',
@@ -143,6 +166,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Commencer a la page',
     'upload.startWord': 'Commencer au mot',
     'upload.startReading': 'Commencer la lecture',
+    'upload.recentTitle': 'Imports precedents',
+    'upload.recentEmpty': 'Aucun document precedent pour le moment.',
+    'upload.resumeFrom': 'Reprendre au mot',
 
     'reader.uploadNew': 'Nouveau fichier',
     'reader.settings': 'Parametres',
@@ -182,7 +208,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Reflexion...',
     'chat.placeholder': 'Posez une question sur ce document',
     'chat.send': 'Envoyer',
-    'chat.error': 'Erreur de chat. Reessayez.'
+    'chat.error': 'Erreur de chat. Reessayez.',
+    'settings.translate': 'Traduire le contenu',
+    'settings.translateOn': 'Activer',
+    'settings.translateOff': 'Desactiver',
+    'settings.translateTarget': 'Traduire vers',
+    'translate.loading': 'Traduction en cours...',
+    'translate.error': 'Traduction echouee'
   },
   Spanish: {
     'health.backend': 'Backend',
@@ -191,7 +223,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'Lector RSVP',
-    'upload.subtitle': 'Sube un PDF para empezar a leer y chatear.',
+    'upload.subtitle': 'Sube un PDF para empezar a leer.',
     'upload.dropzone': 'Arrastra un PDF o haz clic para buscar',
     'upload.failed': 'Fallo en la carga.',
     'upload.words': 'Palabras',
@@ -200,6 +232,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Comenzar en pagina',
     'upload.startWord': 'Comenzar en palabra',
     'upload.startReading': 'Comenzar lectura',
+    'upload.recentTitle': 'Subidas anteriores',
+    'upload.recentEmpty': 'Aun no hay documentos anteriores.',
+    'upload.resumeFrom': 'Reanudar desde la palabra',
 
     'reader.uploadNew': 'Subir nuevo',
     'reader.settings': 'Configuracion',
@@ -239,7 +274,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Pensando...',
     'chat.placeholder': 'Pregunta sobre este documento',
     'chat.send': 'Enviar',
-    'chat.error': 'Error de chat. Intentalo de nuevo.'
+    'chat.error': 'Error de chat. Intentalo de nuevo.',
+    'settings.translate': 'Traducir contenido',
+    'settings.translateOn': 'Activar',
+    'settings.translateOff': 'Desactivar',
+    'settings.translateTarget': 'Traducir a',
+    'translate.loading': 'Traduciendo...',
+    'translate.error': 'Traduccion fallida'
   },
   Chinese: {
     'health.backend': 'Backend',
@@ -248,7 +289,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'RSVP Yue Du Qi',
-    'upload.subtitle': 'Shang chuan PDF kai shi yue du he dui hua.',
+    'upload.subtitle': 'Shang chuan PDF kai shi yue du.',
     'upload.dropzone': 'Tuo fang PDF huo dian ji xuan ze',
     'upload.failed': 'Shang chuan shi bai.',
     'upload.words': 'Dan ci',
@@ -257,6 +298,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Cong ye kai shi',
     'upload.startWord': 'Cong ci kai shi',
     'upload.startReading': 'Kai shi yue du',
+    'upload.recentTitle': 'Yi qian shang chuan',
+    'upload.recentEmpty': 'Zan shi mei you jiu wen dang.',
+    'upload.resumeFrom': 'Jixu cong dan ci',
 
     'reader.uploadNew': 'Xin shang chuan',
     'reader.settings': 'She zhi',
@@ -296,7 +340,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Si kao zhong...',
     'chat.placeholder': 'Dui ci wen dang ti wen',
     'chat.send': 'Fa song',
-    'chat.error': 'Dui hua chu cuo, qing chong shi.'
+    'chat.error': 'Dui hua chu cuo, qing chong shi.',
+    'settings.translate': 'Fan yi nei rong',
+    'settings.translateOn': 'Kai qi',
+    'settings.translateOff': 'Guan bi',
+    'settings.translateTarget': 'Fan yi cheng',
+    'translate.loading': 'Fan yi zhong...',
+    'translate.error': 'Fan yi shi bai'
   },
   Japanese: {
     'health.backend': 'Backend',
@@ -305,7 +355,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'RSVP Riidaa',
-    'upload.subtitle': 'PDF o aploado shite doku sho to chat o kaishi.',
+    'upload.subtitle': 'PDF o aploado shite doku sho o kaishi.',
     'upload.dropzone': 'PDF o doraggu and doroppu mata wa kurikku shite sentaku',
     'upload.failed': 'Aploado ni shippai shimashita.',
     'upload.words': 'Tango',
@@ -314,6 +364,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Kaishi peeji',
     'upload.startWord': 'Kaishi tango',
     'upload.startReading': 'Yomikomi kaishi',
+    'upload.recentTitle': 'Mina tidigare uppladdningar',
+    'upload.recentEmpty': 'Inga tidigare dokument an.',
+    'upload.resumeFrom': 'Ateruppta fran ord',
 
     'reader.uploadNew': 'Atarashiku aploado',
     'reader.settings': 'Settei',
@@ -353,7 +406,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Kangaechuu...',
     'chat.placeholder': 'Kono dokyumento ni tsuite shitsumon',
     'chat.send': 'Soushin',
-    'chat.error': 'Chat eraa. Mou ichido oshite kudasai.'
+    'chat.error': 'Chat eraa. Mou ichido oshite kudasai.',
+    'settings.translate': 'Koontentsu honyaku',
+    'settings.translateOn': 'Yuko ni suru',
+    'settings.translateOff': 'Mukko ni suru',
+    'settings.translateTarget': 'Honyaku saki',
+    'translate.loading': 'Honyaku chuu...',
+    'translate.error': 'Honyaku shippai'
   },
   Swedish: {
     'health.backend': 'Backend',
@@ -362,7 +421,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'RSVP Laesare',
-    'upload.subtitle': 'Ladda upp en PDF foer att boerja laesa och chatta.',
+    'upload.subtitle': 'Ladda upp en PDF foer att boerja laesa.',
     'upload.dropzone': 'Dra och slaepp en PDF eller klicka foer att vaelja',
     'upload.failed': 'Uppladdning misslyckades.',
     'upload.words': 'Ord',
@@ -410,7 +469,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Taenker...',
     'chat.placeholder': 'Staell en fraaga om dokumentet',
     'chat.send': 'Skicka',
-    'chat.error': 'Chatfel. Foersoek igen.'
+    'chat.error': 'Chatfel. Foersoek igen.',
+    'settings.translate': 'Oeversoett innehaall',
+    'settings.translateOn': 'Aktivera',
+    'settings.translateOff': 'Inaktivera',
+    'settings.translateTarget': 'Oeversoett till',
+    'translate.loading': 'Oeversoetter...',
+    'translate.error': 'Oeversoettning misslyckades'
   },
   Indonesian: {
     'health.backend': 'Backend',
@@ -419,7 +484,7 @@ const TRANSLATIONS = {
     'health.fixChroma': 'Fix: docker compose up chromadb',
 
     'upload.title': 'Pembaca RSVP',
-    'upload.subtitle': 'Unggah PDF untuk mulai membaca dan chat.',
+    'upload.subtitle': 'Unggah PDF untuk mulai membaca.',
     'upload.dropzone': 'Seret dan lepas PDF atau klik untuk memilih',
     'upload.failed': 'Unggah gagal.',
     'upload.words': 'Kata',
@@ -428,6 +493,9 @@ const TRANSLATIONS = {
     'upload.startPage': 'Mulai dari halaman',
     'upload.startWord': 'Mulai dari kata',
     'upload.startReading': 'Mulai membaca',
+    'upload.recentTitle': 'Unggahan sebelumnya',
+    'upload.recentEmpty': 'Belum ada dokumen sebelumnya.',
+    'upload.resumeFrom': 'Lanjutkan dari kata',
 
     'reader.uploadNew': 'Unggah baru',
     'reader.settings': 'Pengaturan',
@@ -467,7 +535,13 @@ const TRANSLATIONS = {
     'chat.thinking': 'Sedang berpikir...',
     'chat.placeholder': 'Tanya tentang dokumen ini',
     'chat.send': 'Kirim',
-    'chat.error': 'Kesalahan chat. Coba lagi.'
+    'chat.error': 'Kesalahan chat. Coba lagi.',
+    'settings.translate': 'Terjemahkan konten',
+    'settings.translateOn': 'Aktifkan',
+    'settings.translateOff': 'Nonaktifkan',
+    'settings.translateTarget': 'Terjemahkan ke',
+    'translate.loading': 'Menerjemahkan...',
+    'translate.error': 'Terjemahan gagal'
   }
 };
 
