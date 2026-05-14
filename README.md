@@ -1,4 +1,5 @@
 # RSVP Reader 📖
+Rapid Serial Visual Presentation Reader
 ![Platform](https://img.shields.io/badge/platform-Windows-blue?logo=windows)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
