@@ -20,7 +20,7 @@ models/
 
 # Build output
 build/
-dist/
+dist/uploads/
 *.spec.bak
 
 # Frontend
