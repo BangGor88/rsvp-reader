@@ -54,7 +54,7 @@ export default function App() {
           }}
         />
       ) : (
-        <UploadScreen onUploaded={setDocState} t={t} />
+        <UploadScreen onUploaded={setDocState} settings={settings} t={t} />
       )}
     </div>
   );

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
+import ReadingStats from '../components/ReadingStats';
+import { useReadingTimer } from '../hooks/useReadingTimer';
 
 const PROGRESS_KEY_PREFIX = 'rsvp_progress_';
 
@@ -14,7 +16,7 @@ function getResumeIndex(docId) {
   }
 }
 
-export default function UploadScreen({ onUploaded, t }) {
+export default function UploadScreen({ onUploaded, settings, t }) {
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState('');
   const [meta, setMeta] = useState(null);
@@ -149,6 +151,11 @@ export default function UploadScreen({ onUploaded, t }) {
       )}
 
       <div className="card">
+        <h3>{t('stats.historyTitle')}</h3>
+        <ReadingStatsInline settings={settings} t={t} />
+      </div>
+
+      <div className="card">
         <h3>{t('upload.recentTitle')}</h3>
         {recentDocs.length === 0 ? (
           <p>{t('upload.recentEmpty')}</p>
@@ -185,4 +192,10 @@ export default function UploadScreen({ onUploaded, t }) {
       </div>
     </div>
   );
+}
+
+function ReadingStatsInline({ settings, t }) {
+  const goalMinutes = settings?.dailyGoalMinutes ?? 10;
+  const { todaySeconds, goalSeconds, goalMet, history } = useReadingTimer(false, goalMinutes);
+  return <ReadingStats todaySeconds={todaySeconds} goalSeconds={goalSeconds} goalMet={goalMet} history={history} inline t={t} />;
 }
