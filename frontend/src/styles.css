@@ -145,6 +145,7 @@ button:hover {
 
 .warning { background: rgba(244, 162, 97, 0.24); }
 .error { background: rgba(231, 111, 81, 0.24); }
+.info { background: rgba(76, 175, 255, 0.18); }
 
 .row {
   display: flex;

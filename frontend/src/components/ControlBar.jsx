@@ -27,7 +27,7 @@ export default function ControlBar({
       </button>
       {canToggleSentenceContext && (
         <button onClick={onToggleSentenceContext}>
-          {showSentenceContext ? 'Hide Sentences' : 'Show Sentences'}
+          {showSentenceContext ? '🙈 Hide Sentences' : '👁️ Show Sentences'}
         </button>
       )}
       <select

@@ -19,6 +19,7 @@ function getResumeIndex(docId) {
 export default function UploadScreen({ onUploaded, settings, t }) {
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
   const [meta, setMeta] = useState(null);
   const [startPage, setStartPage] = useState(1);
   const [startWord, setStartWord] = useState(0);
@@ -65,8 +66,12 @@ export default function UploadScreen({ onUploaded, settings, t }) {
 
   const openModelsFolder = async () => {
     setError('');
+    setInfo('');
     try {
-      await api.post('/pdf/models/open-folder');
+      const { data } = await api.post('/pdf/models/open-folder');
+      if (!data.ok && data.path) {
+        setInfo(`📂 ${data.path}`);
+      }
     } catch (err) {
       const msg = err?.response?.data?.detail || t('upload.openModelsFailed');
       setError(String(msg));
@@ -103,6 +108,7 @@ export default function UploadScreen({ onUploaded, settings, t }) {
         <span>{t('upload.dropzone')}</span>
       </label>
 
+      {info && <div className="notice info">{info}</div>}
       {error && <div className="notice error">{error}</div>}
 
       {meta && (

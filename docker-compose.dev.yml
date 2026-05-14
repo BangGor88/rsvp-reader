@@ -21,6 +21,7 @@ services:
     volumes:
       - ./backend:/app
       - pdf_uploads:/app/uploads
+      - C:/Users/nindr/AppData/Local/RSVPReader/models:/models:ro
 
 volumes:
   pdf_uploads:

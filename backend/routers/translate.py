@@ -322,21 +322,16 @@ def _translate_chunk(
     focus_word_index: int | None = None,
     highlight_focus: bool = False,
 ) -> str:
-    focus_instruction = ""
-    if highlight_focus and focus_word:
-        focus_instruction = (
-            f"The user focus word is '{focus_word}'. "
-            "Wrap only its translated equivalent with [[[ and ]]] exactly once. "
-            "Do not wrap any other words. "
-        )
-
+    # Keep the translation prompt clean of any focus-word instructions.
+    # Mentioning the source-language focus word in the prompt causes small
+    # models to echo it back untranslated.  Focus highlighting is always
+    # resolved afterwards by _ensure_focus_highlight.
     prompt = (
         f"You are a professional translator. "
-        f"Translate the text to {target}. "
-        f"{focus_instruction}"
-        f"Output only the translation with no explanations.\n\n"
+        f"Translate every word of the following text to {target}. "
+        f"Output only the {target} translation with no explanations or original text.\n\n"
         f"Text:\n{chunk}\n\n"
-        "Translation:\n"
+        f"{target} translation:\n"
     )
     completion = model.create_completion(
         prompt=prompt,

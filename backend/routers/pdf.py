@@ -257,14 +257,19 @@ def clear_doc(doc_id: str):
 def open_models_folder():
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-    try:
-        if sys.platform.startswith("win"):
+    if sys.platform.startswith("win"):
+        try:
             os.startfile(str(MODELS_DIR))  # type: ignore[attr-defined]
-        elif sys.platform == "darwin":
-            subprocess.Popen(["open", str(MODELS_DIR)])
-        else:
-            subprocess.Popen(["xdg-open", str(MODELS_DIR)])
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Could not open models folder: {exc}") from exc
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"Could not open models folder: {exc}") from exc
+        return {"ok": True, "path": str(MODELS_DIR)}
 
-    return {"ok": True, "path": str(MODELS_DIR)}
+    if sys.platform == "darwin":
+        try:
+            subprocess.Popen(["open", str(MODELS_DIR)])
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"Could not open models folder: {exc}") from exc
+        return {"ok": True, "path": str(MODELS_DIR)}
+
+    # Linux / headless container — no display server available, just return the path
+    return {"ok": False, "path": str(MODELS_DIR)}
