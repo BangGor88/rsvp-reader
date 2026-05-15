@@ -28,6 +28,15 @@ from pathlib import Path
 
 import uvicorn
 from main import app
+from services.app_lifecycle import register_exit_handler
+
+# Try importing system-tray dependencies; gracefully degrade if unavailable.
+try:
+    import pystray
+    from PIL import Image, ImageDraw
+    _TRAY_AVAILABLE = True
+except ImportError:
+    _TRAY_AVAILABLE = False
 
 
 HOST = "127.0.0.1"
@@ -180,6 +189,119 @@ def _guard_port(host: str, port: int) -> None:
         )
 
 
+class _BackendServer:
+    """Controls a uvicorn server that can be stopped and restarted at runtime."""
+
+    class _UvicornThread(uvicorn.Server):
+        """Skip signal-handler setup — only the main thread may install signal handlers."""
+        def install_signal_handlers(self) -> None:
+            pass
+
+    def __init__(self) -> None:
+        self._server: "_BackendServer._UvicornThread | None" = None
+        self._thread: threading.Thread | None = None
+
+    @property
+    def running(self) -> bool:
+        return self._thread is not None and self._thread.is_alive()
+
+    def start(self) -> bool:
+        """Start uvicorn in a background thread.  Returns True once the port is open."""
+        if self.running:
+            return True
+        config = uvicorn.Config(
+            app,
+            host=HOST,
+            port=PORT,
+            log_level="info",
+            log_config=None,
+            access_log=False,
+        )
+        self._server = _BackendServer._UvicornThread(config)
+        self._thread = threading.Thread(target=self._server.run, daemon=True, name="uvicorn")
+        self._thread.start()
+        # Wait up to 10 s for the port to become reachable.
+        for _ in range(100):
+            time.sleep(0.1)
+            if _port_in_use(HOST, PORT):
+                return True
+        return False
+
+    def stop(self) -> None:
+        """Signal uvicorn to shut down."""
+        if self._server is not None:
+            self._server.should_exit = True
+
+    def join(self) -> None:
+        """Block until the server thread exits."""
+        if self._thread is not None:
+            self._thread.join()
+
+
+def _make_tray_icon() -> "Image.Image":
+    """Create a simple 64×64 RGBA icon for the system tray."""
+    size = 64
+    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    try:
+        draw.rounded_rectangle([2, 2, 61, 61], radius=14, fill=(0, 120, 215, 255))
+    except AttributeError:
+        # Pillow < 8.2 does not have rounded_rectangle.
+        draw.ellipse([2, 2, 61, 61], fill=(0, 120, 215, 255))
+    try:
+        from PIL import ImageFont
+        _font = None
+        for _name in ("arialbd.ttf", "arial.ttf", "segoeui.ttf", "verdana.ttf"):
+            try:
+                _font = ImageFont.truetype(_name, 38)
+                break
+            except OSError:
+                continue
+        if _font is None:
+            _font = ImageFont.load_default()
+    except Exception:
+        _font = None
+    draw.text((18, 10), "R", fill="white", font=_font)
+    return img
+
+
+def _run_tray(server: _BackendServer) -> None:
+    """Build and run the system-tray icon.  Blocks until the user chooses Exit."""
+    icon_img = _make_tray_icon()
+
+    def open_reader(icon, item):
+        webbrowser.open(f"http://{HOST}:{PORT}")
+
+    def toggle_backend(icon, item):
+        if server.running:
+            server.stop()
+            # Give uvicorn a moment to release the port before offering restart.
+            time.sleep(0.8)
+        else:
+            if not _port_in_use(HOST, PORT):
+                server.start()
+        icon.update_menu()
+
+    def exit_app(icon, item):
+        server.stop()
+        time.sleep(0.5)
+        icon.stop()
+
+    menu = pystray.Menu(
+        pystray.MenuItem("Open Reader", open_reader, default=True),
+        pystray.Menu.SEPARATOR,
+        pystray.MenuItem(
+            lambda item: "\u23f9  Stop Backend" if server.running else "\u25b6  Start Backend",
+            toggle_backend,
+        ),
+        pystray.Menu.SEPARATOR,
+        pystray.MenuItem("Exit RSVPReader", exit_app),
+    )
+
+    tray = pystray.Icon("RSVPReader", icon_img, "RSVP Reader", menu)
+    tray.run()
+
+
 def _open_browser() -> None:
     time.sleep(1.2)
     webbrowser.open(f"http://{HOST}:{PORT}")
@@ -190,16 +312,28 @@ def main() -> None:
     _validate_paths(frontend_dist, upload_dir, ebook_library_dir, models_dir)
     _validate_model_path(models_dir)
     _guard_port(HOST, PORT)
+
+    server = _BackendServer()
+
+    def _request_process_exit() -> None:
+        # Trigger a graceful backend shutdown and then terminate the EXE process.
+        server.stop()
+        time.sleep(0.4)
+        os._exit(0)
+
+    register_exit_handler(_request_process_exit)
+
+    server.start()
     threading.Thread(target=_open_browser, daemon=True).start()
-    uvicorn.run(
-        app,
-        host=HOST,
-        port=PORT,
-        log_level="info",
-        log_config=None,
-        access_log=False,
-    )
+
+    if _TRAY_AVAILABLE:
+        _run_tray(server)
+    else:
+        # No tray support — block on the server thread until it exits.
+        print("[INFO] pystray/Pillow not available; running without system tray.")
+        server.join()
 
 
 if __name__ == "__main__":
     main()
+

@@ -29,6 +29,41 @@ if (-not (Test-Path '.venv-build\Scripts\python.exe')) {
 & '.venv-build\Scripts\python.exe' -m pip install -r backend/requirements.txt
 & '.venv-build\Scripts\python.exe' -m pip install pyinstaller
 
+# Upgrade to the CUDA-enabled llama-cpp-python wheel when an Nvidia GPU is
+# present on the build machine.  This embeds GPU support into the EXE so that
+# end-users with Nvidia GPUs benefit from hardware acceleration automatically.
+# Falls back silently to the already-installed CPU build if detection fails.
+$nvidiaPresent = $false
+try {
+  $null = & nvidia-smi --query-gpu=name --format=csv,noheader 2>$null
+  $nvidiaPresent = ($LASTEXITCODE -eq 0)
+} catch {}
+
+if ($nvidiaPresent) {
+  # Detect installed CUDA major version (e.g. "12.4" → "cu124").
+  $cudaTag = 'cu124'  # sensible default
+  try {
+    $nvOut = & nvidia-smi 2>$null | Out-String
+    if ($nvOut -match 'CUDA Version:\s*(\d+)\.(\d+)') {
+      $cudaTag = "cu$($Matches[1])$($Matches[2].PadLeft(1,'0'))"
+    }
+  } catch {}
+
+  $wheelIndex = "https://abetlen.github.io/llama-cpp-python/whl/$cudaTag"
+  Write-Host "[3/6] Nvidia GPU detected - installing CUDA llama-cpp-python ($cudaTag)..."
+  try {
+    & '.venv-build\Scripts\python.exe' -m pip install llama-cpp-python `
+        --extra-index-url $wheelIndex `
+        --force-reinstall `
+        --no-cache-dir
+    Write-Host "[3/6] CUDA-enabled llama-cpp-python installed ($cudaTag)."
+  } catch {
+    Write-Warning "CUDA wheel install failed; the EXE will use the CPU build."
+  }
+} else {
+  Write-Host '[3/6] No Nvidia GPU detected - using CPU-only llama-cpp-python.'
+}
+
 Write-Host '[4/6] Building one-file executable...'
 & '.venv-build\Scripts\python.exe' -m PyInstaller RSVPReader.spec --noconfirm --clean
 

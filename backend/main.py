@@ -9,6 +9,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from build_info import get_build_version
+from routers.ai_ctrl import router as ai_ctrl_router
+from routers.app_ctrl import router as app_ctrl_router
 from routers.pdf import router as pdf_router
 from routers.translate import router as translate_router
 
@@ -65,6 +67,8 @@ def create_app() -> FastAPI:
 
     app.include_router(pdf_router, prefix="/api")
     app.include_router(translate_router, prefix="/api")
+    app.include_router(ai_ctrl_router, prefix="/api")
+    app.include_router(app_ctrl_router, prefix="/api")
 
     @app.get("/api/health")
     def health() -> dict[str, Any]:
