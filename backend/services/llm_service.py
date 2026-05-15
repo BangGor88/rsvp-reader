@@ -62,6 +62,21 @@ def _detect_gpu_layers() -> int:
     if explicit:
         return int(explicit)
 
+    # Only attempt GPU offload when a CUDA backend is actually bundled.
+    # On some machines, calling with n_gpu_layers=-1 against CPU-only builds can
+    # fail hard before we can gracefully recover.
+    try:
+        from llama_cpp import __file__ as _llama_file
+
+        lib_dir = Path(_llama_file).resolve().parent / "lib"
+        has_cuda_backend = any(lib_dir.glob("ggml-cuda*.dll"))
+        if not has_cuda_backend:
+            print("[INFO] No CUDA backend DLL bundled; using CPU mode (n_gpu_layers=0)")
+            return 0
+    except Exception:
+        # If detection fails, stay conservative and use CPU mode.
+        return 0
+
     try:
         result = subprocess.run(
             ["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"],
@@ -100,16 +115,40 @@ def get_model():
 
         from llama_cpp import Llama
 
+        n_ctx = int(os.getenv("LLAMA_N_CTX", "2048"))
+        n_threads = int(os.getenv("LLAMA_THREADS", str(_default_threads())))
+        n_batch = int(os.getenv("LLAMA_N_BATCH", "512"))
+        n_gpu_layers = _detect_gpu_layers()
+
         _loading = True
         try:
-            _model = Llama(
-                model_path=model_path,
-                n_ctx=int(os.getenv("LLAMA_N_CTX", "2048")),
-                n_threads=int(os.getenv("LLAMA_THREADS", str(_default_threads()))),
-                n_batch=int(os.getenv("LLAMA_N_BATCH", "512")),
-                n_gpu_layers=_detect_gpu_layers(),
-                verbose=False,
-            )
+            try:
+                _model = Llama(
+                    model_path=model_path,
+                    n_ctx=n_ctx,
+                    n_threads=n_threads,
+                    n_batch=n_batch,
+                    n_gpu_layers=n_gpu_layers,
+                    verbose=False,
+                )
+            except OSError as exc:
+                # Some machines detect an Nvidia GPU but still cannot initialize
+                # the CUDA path with this bundled llama backend. Fall back to CPU.
+                if n_gpu_layers != 0:
+                    print(
+                        "[WARN] GPU model init failed; retrying with CPU mode "
+                        f"(n_gpu_layers=0). Original error: {exc}"
+                    )
+                    _model = Llama(
+                        model_path=model_path,
+                        n_ctx=n_ctx,
+                        n_threads=n_threads,
+                        n_batch=n_batch,
+                        n_gpu_layers=0,
+                        verbose=False,
+                    )
+                else:
+                    raise
         finally:
             _loading = False
         return _model
